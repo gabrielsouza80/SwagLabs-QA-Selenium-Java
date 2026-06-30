@@ -1,0 +1,20 @@
+{
+  "standardUsername": "standard_user",
+  "lockedUsername": "locked_out_user",
+  "problemUsername": "problem_user",
+  "performanceUsername": "performance_glitch_user",
+  "invalidUsername": "inexistent_user",
+  "validPassword": "secret_sauce",
+  "wrongPassword": "wrong_password",
+  "emptyValue": "",
+  "requiredUsernameMessage": "Epic sadface: Username is required",
+  "requiredPasswordMessage": "Epic sadface: Password is required",
+  "invalidCredentialsMessage": "Epic sadface: Username and password do not match any user in this service",
+  "lockedUserMessage": "Epic sadface: Sorry, this user has been locked out.",
+  "maxLength": 255,
+  "invalidAttempts": 6,
+  "longInputCharacter": "a",
+  "inventoryPath": "/inventory.html",
+  "unauthorizedCheckoutUrl": "https://www.saucedemo.com/checkout-step-one.html",
+  "unauthorizedCheckoutMessage": "Epic sadface: You can only access '/checkout-step-one.html' when you are logged in."
+}
