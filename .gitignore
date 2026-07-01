@@ -1,4 +1,5 @@
 target/
+/openjdk-26.0.1_windows-x64_bin/
 .idea/
 .vscode/
 *.iml
