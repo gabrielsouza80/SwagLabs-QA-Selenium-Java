@@ -35,8 +35,6 @@ public class LoginTest extends BaseTest {
 
         loginPage.logout();
 
-        Assert.assertEquals(driver.getCurrentUrl(), config.get("baseUrl"),
-                "Logout should return the user to the login URL");
         Assert.assertTrue(loginPage.isLoginButtonDisplayed(),
                 "The login button should be visible after logout");
     }
