@@ -1,0 +1,15 @@
+{
+  "cartTitle": "Your Cart",
+  "checkoutInformationTitle": "Checkout: Your Information",
+  "productId": "sauce-labs-backpack",
+  "productName": "Sauce Labs Backpack",
+  "productPrice": "$29.99",
+  "productQuantity": "1",
+  "oneItemBadge": "1",
+  "emptyCartItemCount": 0,
+  "oneCartItemCount": 1,
+  "inventoryPath": "/inventory.html",
+  "cartPath": "/cart.html",
+  "checkoutInformationPath": "/checkout-step-one.html"
+}
+
