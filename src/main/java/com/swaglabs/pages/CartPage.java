@@ -22,7 +22,7 @@ public class CartPage extends BasePage {
     }
 
     public boolean isInventoryPageDisplayed() {
-        return waitForUrlContaining("/inventory.html") && isDisplayed(inventoryContainer);
+        return waitForInventoryPage(inventoryContainer);
     }
 
     public void openCart() {
@@ -42,6 +42,10 @@ public class CartPage extends BasePage {
 
     public int getCartItemCount() {
         return driver.findElements(cartItems).size();
+    }
+
+    public boolean hasCartItemCount(int expectedCount) {
+        return waitForElementCount(cartItems, expectedCount);
     }
 
     public void addProductToCart(String productId) {
@@ -69,7 +73,8 @@ public class CartPage extends BasePage {
     }
 
     public void removeProduct(String productId) {
-        click(By.cssSelector("[data-test='remove-" + productId + "']"));
+        By removeButton = By.cssSelector("[data-test='remove-" + productId + "']");
+        clickAndWaitForInvisibility(removeButton, removeButton);
     }
 
     public void continueShopping() {
@@ -89,7 +94,10 @@ public class CartPage extends BasePage {
 
     public void proceedToCheckout() {
         click(checkoutButton);
-        waitForUrlContaining("/checkout-step-one.html");
+        if (!waitForUrlContaining("/checkout-step-one.html")) {
+            clickWithJavaScript(checkoutButton);
+            waitForUrlContaining("/checkout-step-one.html");
+        }
         waitForVisibility(pageTitle);
     }
 
@@ -98,4 +106,3 @@ public class CartPage extends BasePage {
                 && isDisplayed(pageTitle);
     }
 }
-

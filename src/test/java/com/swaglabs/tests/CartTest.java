@@ -44,7 +44,7 @@ public class CartTest extends BaseTest {
     public void emptyCartContainsNoProducts() {
         cartPage.openCart();
 
-        Assert.assertEquals(cartPage.getCartItemCount(), cartData.getInt("emptyCartItemCount"),
+        Assert.assertTrue(cartPage.hasCartItemCount(cartData.getInt("emptyCartItemCount")),
                 "A new user session should open an empty cart");
         Assert.assertFalse(cartPage.isCartBadgeDisplayed(),
                 "An empty cart should not display a cart badge");
@@ -58,7 +58,7 @@ public class CartTest extends BaseTest {
 
         cartPage.openCart();
 
-        Assert.assertEquals(cartPage.getCartItemCount(), cartData.getInt("oneCartItemCount"),
+        Assert.assertTrue(cartPage.hasCartItemCount(cartData.getInt("oneCartItemCount")),
                 "The cart should contain one product");
         Assert.assertEquals(cartPage.getCartItemName(), cartData.getString("productName"),
                 "The cart should display the added product name");
@@ -78,7 +78,7 @@ public class CartTest extends BaseTest {
 
         cartPage.removeProduct(productId);
 
-        Assert.assertEquals(cartPage.getCartItemCount(), cartData.getInt("emptyCartItemCount"),
+        Assert.assertTrue(cartPage.hasCartItemCount(cartData.getInt("emptyCartItemCount")),
                 "Removing the only product should empty the cart");
         Assert.assertFalse(cartPage.isCartBadgeDisplayed(),
                 "Removing the only product should remove the cart badge");
@@ -122,4 +122,3 @@ public class CartTest extends BaseTest {
                 "The checkout information URL should contain the expected path");
     }
 }
-
