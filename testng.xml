@@ -24,4 +24,9 @@
             <class name="com.swaglabs.tests.CartTest"/>
         </classes>
     </test>
+    <test name="Checkout Tests">
+        <classes>
+            <class name="com.swaglabs.tests.CheckoutTest"/>
+        </classes>
+    </test>
 </suite>
