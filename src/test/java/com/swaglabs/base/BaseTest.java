@@ -2,6 +2,7 @@ package com.swaglabs.base;
 
 import com.swaglabs.pages.LoginPage;
 import com.swaglabs.utils.ConfigReader;
+import com.swaglabs.utils.JsonReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +12,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 public abstract class BaseTest {
+    private static final JsonReader LOGIN_DATA =
+            new JsonReader("testdata/login-test-data.json");
+
     protected WebDriver driver;
     protected LoginPage loginPage;
     protected ConfigReader config;
@@ -47,5 +51,11 @@ public abstract class BaseTest {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    protected void loginAsStandardUser() {
+        loginPage.login(
+                LOGIN_DATA.getString("standardUsername"),
+                LOGIN_DATA.getString("validPassword"));
     }
 }

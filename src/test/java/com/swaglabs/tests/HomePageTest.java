@@ -11,15 +11,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class HomePageTest extends BaseTest {
-    private final JsonReader loginData = new JsonReader("testdata/login-test-data.json");
     private final JsonReader homePageData = new JsonReader("testdata/homepage-test-data.json");
     private HomePage homePage;
 
     @BeforeMethod(alwaysRun = true)
     public void loginBeforeEachTest() {
-        loginPage.login(
-                loginData.getString("standardUsername"),
-                loginData.getString("validPassword"));
+        loginAsStandardUser();
         homePage = new HomePage(driver, config.getLong("timeout"));
         Assert.assertTrue(homePage.isInventoryPageDisplayed(),
                 "Precondition failed: standard_user should reach the inventory page");

@@ -9,16 +9,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class CheckoutTest extends BaseTest {
-    private final JsonReader loginData = new JsonReader("testdata/login-test-data.json");
     private final JsonReader checkoutData =
             new JsonReader("testdata/checkout-test-data.json");
     private CheckoutPage checkoutPage;
 
     @BeforeMethod(alwaysRun = true)
     public void openCheckoutInformationBeforeEachTest() {
-        loginPage.login(
-                loginData.getString("standardUsername"),
-                loginData.getString("validPassword"));
+        loginAsStandardUser();
 
         CartPage cartPage = new CartPage(driver, config.getLong("timeout"));
         Assert.assertTrue(cartPage.isInventoryPageDisplayed(),
@@ -171,4 +168,3 @@ public class CheckoutTest extends BaseTest {
                 "Valid customer information should open the checkout overview");
     }
 }
-

@@ -8,15 +8,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class CartTest extends BaseTest {
-    private final JsonReader loginData = new JsonReader("testdata/login-test-data.json");
     private final JsonReader cartData = new JsonReader("testdata/cart-test-data.json");
     private CartPage cartPage;
 
     @BeforeMethod(alwaysRun = true)
     public void loginBeforeEachTest() {
-        loginPage.login(
-                loginData.getString("standardUsername"),
-                loginData.getString("validPassword"));
+        loginAsStandardUser();
         cartPage = new CartPage(driver, config.getLong("timeout"));
         Assert.assertTrue(cartPage.isInventoryPageDisplayed(),
                 "Precondition failed: standard_user should reach the inventory page");
