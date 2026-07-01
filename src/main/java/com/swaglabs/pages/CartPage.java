@@ -26,8 +26,7 @@ public class CartPage extends BasePage {
     }
 
     public void openCart() {
-        click(cartLink);
-        waitForUrlContaining("/cart.html");
+        clickAndWaitForUrlContaining(cartLink, "/cart.html");
         waitForVisibility(pageTitle);
     }
 
@@ -76,8 +75,7 @@ public class CartPage extends BasePage {
     }
 
     public void continueShopping() {
-        click(continueShoppingButton);
-        waitForUrlContaining("/inventory.html");
+        clickAndWaitForUrlContaining(continueShoppingButton, "/inventory.html");
         waitForVisibility(inventoryContainer);
     }
 
@@ -91,11 +89,7 @@ public class CartPage extends BasePage {
     }
 
     public void proceedToCheckout() {
-        click(checkoutButton);
-        if (!waitForUrlContaining("/checkout-step-one.html")) {
-            clickWithJavaScript(checkoutButton);
-            waitForUrlContaining("/checkout-step-one.html");
-        }
+        clickAndWaitForUrlContaining(checkoutButton, "/checkout-step-one.html");
         waitForVisibility(pageTitle);
     }
 

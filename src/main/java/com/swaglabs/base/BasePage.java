@@ -13,11 +13,13 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class BasePage {
     private static final Duration POPUP_TIMEOUT = Duration.ofMillis(200);
+    private static final Duration STATE_CHANGE_TIMEOUT = Duration.ofSeconds(2);
     private static final By HTML_DIALOG =
             By.cssSelector("[role='dialog'], [aria-modal='true']");
     private static final List<By> DISMISS_BUTTONS = List.of(
@@ -36,10 +38,12 @@ public abstract class BasePage {
 
     protected final WebDriver driver;
     private final WebDriverWait wait;
+    private final WebDriverWait stateChangeWait;
 
     protected BasePage(WebDriver driver, long timeoutSeconds) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        this.stateChangeWait = new WebDriverWait(driver, STATE_CHANGE_TIMEOUT);
     }
 
     protected void click(By locator) {
@@ -106,19 +110,19 @@ public abstract class BasePage {
     }
 
     protected void clickAndWaitForVisibility(By action, By expectedElement) {
-        click(action);
-        if (!isDisplayed(expectedElement)) {
-            clickWithJavaScript(action);
-            waitForVisibility(expectedElement);
-        }
+        clickAndWaitForState(
+                action,
+                ExpectedConditions.visibilityOfElementLocated(expectedElement));
     }
 
     protected void clickAndWaitForInvisibility(By action, By elementToDisappear) {
-        click(action);
-        if (!waitForInvisibility(elementToDisappear)) {
-            clickWithJavaScript(action);
-            waitForInvisibility(elementToDisappear);
-        }
+        clickAndWaitForState(
+                action,
+                ExpectedConditions.invisibilityOfElementLocated(elementToDisappear));
+    }
+
+    protected void clickAndWaitForUrlContaining(By action, String urlFragment) {
+        clickAndWaitForState(action, ExpectedConditions.urlContains(urlFragment));
     }
 
     protected void clickWithJavaScript(By locator) {
@@ -188,6 +192,31 @@ public abstract class BasePage {
             wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
             return null;
         });
+    }
+
+    private void clickAndWaitForState(By action, ExpectedCondition<?> expectedState) {
+        click(action);
+        if (waitForState(expectedState)) {
+            return;
+        }
+
+        dismissUnexpectedPopupIfPresent();
+        click(action);
+        if (waitForState(expectedState)) {
+            return;
+        }
+
+        clickWithJavaScript(action);
+        wait.until(expectedState);
+    }
+
+    private boolean waitForState(ExpectedCondition<?> expectedState) {
+        try {
+            stateChangeWait.until(expectedState);
+            return true;
+        } catch (TimeoutException exception) {
+            return false;
+        }
     }
 
     private <T> T executeWithAlertRecovery(Supplier<T> action) {

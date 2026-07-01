@@ -44,7 +44,7 @@ public class LoginPage extends BasePage {
     }
 
     public void logout() {
-        click(menuButton);
+        clickAndWaitForVisibility(menuButton, logoutLink);
         clickAndWaitForVisibility(logoutLink, loginButton);
     }
 

@@ -62,11 +62,14 @@ public class HomePage extends BasePage {
     }
 
     public void addProductToCart(String productId) {
-        click(By.cssSelector("[data-test='add-to-cart-" + productId + "']"));
+        By addButton = By.cssSelector("[data-test='add-to-cart-" + productId + "']");
+        By removeButton = By.cssSelector("[data-test='remove-" + productId + "']");
+        clickAndWaitForVisibility(addButton, removeButton);
     }
 
     public void removeProductFromCart(String productId) {
-        click(By.cssSelector("[data-test='remove-" + productId + "']"));
+        By removeButton = By.cssSelector("[data-test='remove-" + productId + "']");
+        clickAndWaitForInvisibility(removeButton, removeButton);
     }
 
     public String getCartBadgeText() {
@@ -83,8 +86,7 @@ public class HomePage extends BasePage {
     }
 
     public void openSideMenu() {
-        click(menuButton);
-        waitForVisibility(logoutLink);
+        clickAndWaitForVisibility(menuButton, logoutLink);
     }
 
     public boolean isLogoutLinkDisplayed() {

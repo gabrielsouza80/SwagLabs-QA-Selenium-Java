@@ -44,8 +44,7 @@ public class ComponentsPage extends BasePage {
     }
 
     public void openSideMenu() {
-        click(menuButton);
-        waitForVisibility(sideMenu);
+        clickAndWaitForVisibility(menuButton, sideMenu);
     }
 
     public boolean isSideMenuDisplayed() {
@@ -81,8 +80,7 @@ public class ComponentsPage extends BasePage {
     }
 
     public void openCart() {
-        click(cartLink);
-        waitForUrlContaining("/cart.html");
+        clickAndWaitForUrlContaining(cartLink, "/cart.html");
     }
 
     public boolean isCartPageDisplayed(String expectedTitle) {
