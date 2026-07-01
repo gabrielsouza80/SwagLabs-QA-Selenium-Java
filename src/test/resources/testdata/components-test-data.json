@@ -1,0 +1,12 @@
+{
+  "expectedLogo": "Swag Labs",
+  "expectedMenuLinks": [
+    "All Items",
+    "About",
+    "Logout",
+    "Reset App State"
+  ],
+  "expectedCopyrightText": "Sauce Labs. All Rights Reserved.",
+  "expectedCartTitle": "Your Cart"
+}
+
