@@ -40,10 +40,6 @@ public class CartPage extends BasePage {
         return getText(pageTitle);
     }
 
-    public int getCartItemCount() {
-        return driver.findElements(cartItems).size();
-    }
-
     public boolean hasCartItemCount(int expectedCount) {
         if (waitForElementCount(cartItems, expectedCount)) {
             return true;
