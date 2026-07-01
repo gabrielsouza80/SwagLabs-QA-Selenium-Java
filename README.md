@@ -7,6 +7,7 @@ The current scope covers:
 - HomePage
 - Components
 - Cart
+- Checkout
 
 ## Technologies
 
@@ -29,7 +30,7 @@ src/
     ├── java/com/swaglabs/
     │   ├── base/       # WebDriver test lifecycle
     │   ├── listeners/  # Failure screenshot listener
-    │   └── tests/      # Login, HomePage, Components, and Cart tests
+    │   └── tests/      # Login, HomePage, Components, Cart, and Checkout tests
     └── resources/
         ├── testdata/   # External JSON test data
         └── config.properties
