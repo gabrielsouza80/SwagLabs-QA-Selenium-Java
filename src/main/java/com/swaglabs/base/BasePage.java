@@ -58,14 +58,6 @@ public abstract class BasePage {
         WebElement element = waitForVisibility(locator);
         element.clear();
         element.sendKeys(text);
-        if (!text.equals(element.getDomProperty("value"))) {
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].value = arguments[1];"
-                            + "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));"
-                            + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
-                    element,
-                    text);
-        }
     }
 
     protected String getText(By locator) {
