@@ -45,11 +45,18 @@ public class CartPage extends BasePage {
     }
 
     public boolean hasCartItemCount(int expectedCount) {
+        if (waitForElementCount(cartItems, expectedCount)) {
+            return true;
+        }
+        driver.navigate().refresh();
+        waitForVisibility(pageTitle);
         return waitForElementCount(cartItems, expectedCount);
     }
 
     public void addProductToCart(String productId) {
-        click(By.cssSelector("[data-test='add-to-cart-" + productId + "']"));
+        By addButton = By.cssSelector("[data-test='add-to-cart-" + productId + "']");
+        By removeButton = By.cssSelector("[data-test='remove-" + productId + "']");
+        clickAndWaitForVisibility(addButton, removeButton);
     }
 
     public String getCartBadgeText() {
