@@ -1,4 +1,4 @@
-name: Selenium Login Tests
+name: Selenium Test Suite
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  login-tests:
+  selenium-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,14 +29,14 @@ jobs:
       - name: Set up Google Chrome
         uses: browser-actions/setup-chrome@v2
 
-      - name: Run Login tests
+      - name: Run Selenium test suite
         run: mvn --batch-mode clean test -Dheadless=true
 
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: selenium-login-test-results-${{ github.run_number }}
+          name: selenium-test-results-${{ github.run_number }}
           path: |
             target/surefire-reports/
             screenshots/
