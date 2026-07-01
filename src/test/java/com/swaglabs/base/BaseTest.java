@@ -3,6 +3,7 @@ package com.swaglabs.base;
 import com.swaglabs.pages.LoginPage;
 import com.swaglabs.utils.ConfigReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -29,10 +30,12 @@ public abstract class BaseTest {
             options.addArguments("--disable-dev-shm-usage");
         }
         options.addArguments("--window-size=1920,1080");
+        options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
 
         driver = new ChromeDriver(options);
         driver.get(config.get("baseUrl"));
         loginPage = new LoginPage(driver, config.getLong("timeout"));
+        loginPage.dismissUnexpectedPopupIfPresent();
     }
 
     @AfterMethod(alwaysRun = true)
