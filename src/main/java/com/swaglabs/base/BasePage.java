@@ -7,6 +7,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -62,6 +63,40 @@ public abstract class BasePage {
         WebElement element = waitForVisibility(locator);
         element.clear();
         element.sendKeys(text);
+    }
+
+    protected void typeAndVerify(By locator, String text) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        enterText(element, text);
+        if (hasExpectedValue(element, text)) {
+            return;
+        }
+
+        element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        enterText(element, text);
+        if (hasExpectedValue(element, text)) {
+            return;
+        }
+
+        setInputValueWithJavaScript(locator, text);
+    }
+
+    protected void waitForInputValue(By locator, String expectedValue) {
+        wait.until(ignored -> hasExpectedValue(
+                driver.findElement(locator), expectedValue));
+    }
+
+    protected void setInputValueWithJavaScript(By locator, String text) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        ((JavascriptExecutor) driver).executeScript(
+                "const setter = Object.getOwnPropertyDescriptor("
+                        + "window.HTMLInputElement.prototype, 'value').set;"
+                        + "setter.call(arguments[0], arguments[1]);"
+                        + "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));"
+                        + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+                element,
+                text);
+        waitForInputValue(locator, text);
     }
 
     protected String getText(By locator) {
@@ -123,6 +158,33 @@ public abstract class BasePage {
 
     protected void clickAndWaitForUrlContaining(By action, String urlFragment) {
         clickAndWaitForState(action, ExpectedConditions.urlContains(urlFragment));
+    }
+
+    protected boolean clickAndWaitForVisibilityOrError(
+            By action, By expectedElement, By errorElement) {
+        click(action);
+        Boolean expectedStateReached = waitForVisibilityOrError(
+                stateChangeWait, expectedElement, errorElement);
+        if (expectedStateReached != null) {
+            return expectedStateReached;
+        }
+
+        dismissUnexpectedPopupIfPresent();
+        click(action);
+        expectedStateReached = waitForVisibilityOrError(
+                stateChangeWait, expectedElement, errorElement);
+        if (expectedStateReached != null) {
+            return expectedStateReached;
+        }
+
+        clickWithJavaScript(action);
+        expectedStateReached = waitForVisibilityOrError(
+                wait, expectedElement, errorElement);
+        if (expectedStateReached == null) {
+            throw new TimeoutException(
+                    "Neither the expected element nor the error element became visible");
+        }
+        return expectedStateReached;
     }
 
     protected void clickWithJavaScript(By locator) {
@@ -194,6 +256,15 @@ public abstract class BasePage {
         });
     }
 
+    private void enterText(WebElement element, String text) {
+        element.clear();
+        element.sendKeys(text, Keys.TAB);
+    }
+
+    private boolean hasExpectedValue(WebElement element, String expectedValue) {
+        return expectedValue.equals(element.getDomProperty("value"));
+    }
+
     private void clickAndWaitForState(By action, ExpectedCondition<?> expectedState) {
         click(action);
         if (waitForState(expectedState)) {
@@ -216,6 +287,19 @@ public abstract class BasePage {
             return true;
         } catch (TimeoutException exception) {
             return false;
+        }
+    }
+
+    private Boolean waitForVisibilityOrError(
+            WebDriverWait stateWait, By expectedElement, By errorElement) {
+        try {
+            stateWait.until(ExpectedConditions.or(
+                    ExpectedConditions.visibilityOfElementLocated(expectedElement),
+                    ExpectedConditions.visibilityOfElementLocated(errorElement)));
+            return driver.findElements(expectedElement).stream()
+                    .anyMatch(WebElement::isDisplayed);
+        } catch (TimeoutException exception) {
+            return null;
         }
     }
 

@@ -48,19 +48,19 @@ public class CheckoutPage extends BasePage {
     }
 
     public void enterFirstName(String firstName) {
-        type(firstNameField, firstName);
+        typeAndVerify(firstNameField, firstName);
     }
 
     public void enterLastName(String lastName) {
-        type(lastNameField, lastName);
+        typeAndVerify(lastNameField, lastName);
     }
 
     public void enterPostalCode(String postalCode) {
-        type(postalCodeField, postalCode);
+        typeAndVerify(postalCodeField, postalCode);
     }
 
     public void clickContinue() {
-        click(continueButton);
+        clickAndWaitForVisibility(continueButton, errorMessage);
     }
 
     public String getErrorMessage() {
@@ -72,7 +72,16 @@ public class CheckoutPage extends BasePage {
         enterFirstName(firstName);
         enterLastName(lastName);
         enterPostalCode(postalCode);
-        clickAndWaitForVisibility(continueButton, summaryInfo);
+        waitForInputValue(firstNameField, firstName);
+        waitForInputValue(lastNameField, lastName);
+        waitForInputValue(postalCodeField, postalCode);
+        if (!clickAndWaitForVisibilityOrError(
+                continueButton, summaryInfo, errorMessage)) {
+            setInputValueWithJavaScript(firstNameField, firstName);
+            setInputValueWithJavaScript(lastNameField, lastName);
+            setInputValueWithJavaScript(postalCodeField, postalCode);
+            clickAndWaitForVisibility(continueButton, summaryInfo);
+        }
     }
 
     public boolean isOverviewPageDisplayed() {
@@ -156,4 +165,3 @@ public class CheckoutPage extends BasePage {
                 .allMatch(WebElement::isDisplayed);
     }
 }
-
