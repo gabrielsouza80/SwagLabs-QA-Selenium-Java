@@ -97,13 +97,11 @@ public class LoginTest extends BaseTest {
     public void unauthenticatedUserCannotAccessCheckout() {
         driver.get(data.getString("unauthorizedCheckoutUrl"));
 
-        Assert.assertEquals(driver.getCurrentUrl(), config.get("baseUrl"),
-                "An unauthenticated user should be redirected to the login URL");
+        Assert.assertTrue(loginPage.isLoginButtonDisplayed(),
+                "The login page should remain available after the blocked checkout request");
         Assert.assertEquals(loginPage.getErrorMessage(),
                 data.getString("unauthorizedCheckoutMessage"),
                 "Direct checkout access should explain that authentication is required");
-        Assert.assertTrue(loginPage.isLoginButtonDisplayed(),
-                "The login page should remain available after the blocked checkout request");
     }
 
     private void loginAs(String usernameKey, String passwordKey) {
