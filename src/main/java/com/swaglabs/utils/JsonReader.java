@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 public final class JsonReader {
     private final JsonNode data;
@@ -31,6 +33,22 @@ public final class JsonReader {
             throw new IllegalArgumentException("JSON value is not an integer: " + key);
         }
         return value.asInt();
+    }
+
+    public List<String> getStringList(String key) {
+        JsonNode value = requiredValue(key);
+        if (!value.isArray()) {
+            throw new IllegalArgumentException("JSON value is not an array: " + key);
+        }
+        return StreamSupport.stream(value.spliterator(), false)
+                .map(item -> {
+                    if (!item.isTextual()) {
+                        throw new IllegalArgumentException(
+                                "JSON array contains a non-text value: " + key);
+                    }
+                    return item.asText();
+                })
+                .toList();
     }
 
     private JsonNode requiredValue(String key) {
