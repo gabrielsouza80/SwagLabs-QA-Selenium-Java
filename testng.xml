@@ -19,4 +19,9 @@
             <class name="com.swaglabs.tests.ComponentsTest"/>
         </classes>
     </test>
+    <test name="Cart Tests">
+        <classes>
+            <class name="com.swaglabs.tests.CartTest"/>
+        </classes>
+    </test>
 </suite>
