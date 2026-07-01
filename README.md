@@ -1,7 +1,11 @@
 # SwagLabs QA Selenium Java
 
 Java and Selenium test automation for [SauceDemo](https://www.saucedemo.com/).
-The current scope covers the Login feature only.
+The current scope covers:
+
+- Login
+- HomePage
+- Components
 
 ## Technologies
 
@@ -24,7 +28,7 @@ src/
     ├── java/com/swaglabs/
     │   ├── base/       # WebDriver test lifecycle
     │   ├── listeners/  # Failure screenshot listener
-    │   └── tests/      # Login tests
+    │   └── tests/      # Login, HomePage, and Components tests
     └── resources/
         ├── testdata/   # External JSON test data
         └── config.properties
@@ -51,6 +55,15 @@ mvn clean test
 
 Browser and headless settings can be changed in
 `src/test/resources/config.properties`.
+
+To override headless mode without changing the configuration file:
+
+```bash
+mvn clean test -Dheadless=true
+```
+
+The GitHub Actions workflow runs all implemented suites in headless Chrome for pushes
+and pull requests targeting `main`, then uploads reports and failure screenshots.
 
 ## Best practices
 
