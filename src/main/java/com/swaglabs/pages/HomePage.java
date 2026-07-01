@@ -24,7 +24,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isInventoryPageDisplayed() {
-        return waitForUrlContaining("/inventory.html") && isDisplayed(inventoryContainer);
+        return waitForInventoryPage(inventoryContainer);
     }
 
     public int getProductCardCount() {
@@ -78,6 +78,7 @@ public class HomePage extends BasePage {
     }
 
     public void sortProductsBy(String value) {
+        dismissUnexpectedPopupIfPresent();
         new Select(waitForVisibility(sortDropdown)).selectByValue(value);
     }
 
@@ -92,7 +93,7 @@ public class HomePage extends BasePage {
 
     public void logout() {
         openSideMenu();
-        click(logoutLink);
+        clickAndWaitForVisibility(logoutLink, By.id("login-button"));
     }
 
     private boolean areAllElementsDisplayed(By locator) {

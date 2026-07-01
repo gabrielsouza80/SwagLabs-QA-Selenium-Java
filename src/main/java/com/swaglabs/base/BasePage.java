@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -82,6 +83,55 @@ public abstract class BasePage {
         } catch (TimeoutException exception) {
             return false;
         }
+    }
+
+    protected boolean waitForElementCount(By locator, int expectedCount) {
+        try {
+            return executeWithAlertRecovery(
+                    () -> wait.until(ExpectedConditions.numberOfElementsToBe(
+                            locator, expectedCount))) != null;
+        } catch (TimeoutException exception) {
+            return false;
+        }
+    }
+
+    protected boolean waitForInvisibility(By locator) {
+        try {
+            return executeWithAlertRecovery(
+                    () -> wait.until(ExpectedConditions.invisibilityOfElementLocated(locator)));
+        } catch (TimeoutException exception) {
+            return false;
+        }
+    }
+
+    protected void clickAndWaitForVisibility(By action, By expectedElement) {
+        click(action);
+        if (!isDisplayed(expectedElement)) {
+            clickWithJavaScript(action);
+            waitForVisibility(expectedElement);
+        }
+    }
+
+    protected void clickAndWaitForInvisibility(By action, By elementToDisappear) {
+        click(action);
+        if (!waitForInvisibility(elementToDisappear)) {
+            clickWithJavaScript(action);
+            waitForInvisibility(elementToDisappear);
+        }
+    }
+
+    protected void clickWithJavaScript(By locator) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+    }
+
+    protected boolean waitForInventoryPage(By inventoryContainer) {
+        boolean inventoryDisplayed = waitForUrlContaining("/inventory.html")
+                && isDisplayed(inventoryContainer);
+        if (inventoryDisplayed) {
+            dismissUnexpectedPopupIfPresent();
+        }
+        return inventoryDisplayed;
     }
 
     public boolean dismissUnexpectedPopupIfPresent() {

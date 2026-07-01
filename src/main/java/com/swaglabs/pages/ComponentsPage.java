@@ -97,8 +97,7 @@ public class ComponentsPage extends BasePage {
     }
 
     public boolean isInventoryPageDisplayed() {
-        return driver.getCurrentUrl().contains("/inventory.html")
-                && isDisplayed(inventoryContainer);
+        return waitForInventoryPage(inventoryContainer);
     }
 
     private boolean areAllElementsDisplayed(List<By> locators) {
@@ -107,4 +106,3 @@ public class ComponentsPage extends BasePage {
                 .allMatch(WebElement::isDisplayed);
     }
 }
-

@@ -45,10 +45,10 @@ public class LoginPage extends BasePage {
 
     public void logout() {
         click(menuButton);
-        click(logoutLink);
+        clickAndWaitForVisibility(logoutLink, loginButton);
     }
 
     public boolean isInventoryPageDisplayed() {
-        return waitForUrlContaining("/inventory.html") && isDisplayed(inventoryContainer);
+        return waitForInventoryPage(inventoryContainer);
     }
 }
