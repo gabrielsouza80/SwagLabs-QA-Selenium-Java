@@ -17,7 +17,7 @@ public final class ConfigReader {
     }
 
     public String get(String key) {
-        String value = properties.getProperty(key);
+        String value = System.getProperty(key, properties.getProperty(key));
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Missing configuration property: " + key);
         }
