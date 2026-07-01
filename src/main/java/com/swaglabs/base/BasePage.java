@@ -43,6 +43,7 @@ public abstract class BasePage {
     }
 
     protected void click(By locator) {
+        dismissUnexpectedPopupIfPresent();
         try {
             clickWithAlertRecovery(locator);
         } catch (ElementClickInterceptedException exception) {
@@ -57,7 +58,7 @@ public abstract class BasePage {
         WebElement element = waitForVisibility(locator);
         element.clear();
         element.sendKeys(text);
-        if (!text.equals(element.getAttribute("value"))) {
+        if (!text.equals(element.getDomProperty("value"))) {
             ((JavascriptExecutor) driver).executeScript(
                     "arguments[0].value = arguments[1];"
                             + "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));"
