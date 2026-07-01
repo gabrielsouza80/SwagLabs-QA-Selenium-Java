@@ -41,11 +41,6 @@ public class CartPage extends BasePage {
     }
 
     public boolean hasCartItemCount(int expectedCount) {
-        if (waitForElementCount(cartItems, expectedCount)) {
-            return true;
-        }
-        driver.navigate().refresh();
-        waitForVisibility(pageTitle);
         return waitForElementCount(cartItems, expectedCount);
     }
 
