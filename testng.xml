@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SwagLabs Test Suite" parallel="false">
+    <listeners>
+        <listener class-name="com.swaglabs.listeners.TestListener"/>
+    </listeners>
+    <test name="Login Tests">
+        <classes>
+            <class name="com.swaglabs.tests.LoginTest"/>
+        </classes>
+    </test>
+    <test name="HomePage Tests">
+        <classes>
+            <class name="com.swaglabs.tests.HomePageTest"/>
+        </classes>
+    </test>
+    <test name="Components Tests">
+        <classes>
+            <class name="com.swaglabs.tests.ComponentsTest"/>
+        </classes>
+    </test>
+    <test name="Cart Tests">
+        <classes>
+            <class name="com.swaglabs.tests.CartTest"/>
+        </classes>
+    </test>
+    <test name="Checkout Tests">
+        <classes>
+            <class name="com.swaglabs.tests.CheckoutTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,25 @@
+{
+  "productId": "sauce-labs-backpack",
+  "productName": "Sauce Labs Backpack",
+  "productPrice": "$29.99",
+  "oneItemBadge": "1",
+  "expectedCartItemCount": 1,
+  "firstName": "Gabriel",
+  "lastName": "Souza",
+  "postalCode": "01001000",
+  "cartTitle": "Your Cart",
+  "informationTitle": "Checkout: Your Information",
+  "overviewTitle": "Checkout: Overview",
+  "completeTitle": "Checkout: Complete!",
+  "requiredFirstNameMessage": "Error: First Name is required",
+  "requiredLastNameMessage": "Error: Last Name is required",
+  "requiredPostalCodeMessage": "Error: Postal Code is required",
+  "paymentInformation": "SauceCard #31337",
+  "shippingInformation": "Free Pony Express Delivery!",
+  "itemTotal": "Item total: $29.99",
+  "tax": "Tax: $2.40",
+  "total": "Total: $32.39",
+  "completeHeader": "Thank you for your order!",
+  "completeTextContains": "Your order has been dispatched"
+}
+
